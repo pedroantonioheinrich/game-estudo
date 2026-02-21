@@ -1,4 +1,5 @@
 import pygame
+from time import sleep
 from sys import exit
 from random import randint
 
@@ -29,8 +30,8 @@ cores = [PRETO, VERDE, AZUL, CIANO, AMARELO, MAGENTA]
 # POSIÇÕES DA SNAKE
 w_snake = 30  # LARGURA DA SNAKE
 h_snake = 30  # ALTURA DA SNAKE
-x_snake = (ALTURA / 2) - (w_snake / 2)
-y_snake = (LARGURA / 2) - (w_snake / 2)
+x_snake = (ALTURA / 2) - w_snake
+y_snake = (LARGURA / 2) - w_snake
 change_direction = False
 direction = 'right'
 
@@ -47,6 +48,8 @@ nova_cor = cores[randint(0, len(cores) - 1)]
 # PLACAR
 pontos = 0
 fonte = pygame.font.Font(None, 36) # FONTE SELECIONADA E TAMANHO
+fonte1 = pygame.font.Font(None, 36) # FONTE SELECIONADA E TAMANHO
+
 
 
 
@@ -72,6 +75,8 @@ while True:
             elif evento.key == pygame.K_s:
                 change_direction = True
                 direction = 'down'
+    
+                
             
 
     # PREENCHER A COR DA TELA
@@ -84,8 +89,6 @@ while True:
                     #3 - POSIÇÃO (X, Y) DE ONDE ELA VAI APARECER
                     #4 - ALTURA E LARGURA DA FORMA 
     snake = pygame.draw.rect(TELA, BRANCO, (x_snake, y_snake, h_snake,w_snake) )
-    snake_body = pygame.draw.rect(TELA, PRETO, (x_prev_snake, y_prev_snake, h_snake,w_snake) )
-        
     
     food = pygame.draw.circle(TELA, nova_cor,(x_food, y_food), 10)
     
@@ -93,15 +96,26 @@ while True:
     # TODA A LÓGICA MOVIMENTAÇÃO, COLISÕES E ETC... ANTES DE ATUALIZAR A TELA
     # <---- A LOGICA VAI AQUI ---->
 
-    if x_snake > LARGURA or x_snake < 0:
-        print("PERDEU")
+    texto1 = fonte1.render("PERDEU...", True, BRANCO) # TEXTO A SER MOSTRADO    
+    # POSICIONANDO O TEXTO
+    rect_texto1 = texto1.get_rect()
+    rect_texto1.center = (400, 400)    
+
+    if x_snake > LARGURA - 30 or x_snake < 0:
+        change_direction = False
+        x_snake = x_snake
+        TELA.blit(texto1, rect_texto1)
+        sleep(3)
         break
-    elif y_snake > ALTURA or y_snake < 0:
-        print("PERDEU!")
+    elif y_snake > ALTURA - 30 or y_snake < 0:
+        change_direction = False
+        y_snake = y_snake
+        TELA.blit(texto1, rect_texto1)
+        sleep(3)
         break
     
     if change_direction != True:
-        x_snake += 10 # QUADRADO ANDA SOZINHO PRA DIREITA
+        x_snake = x_snake # QUADRADO ANDA SOZINHO PRA DIREITA
     else:
         if direction == 'right':
             x_snake += 10
@@ -123,10 +137,10 @@ while True:
         pontos += 1
         print(f"Pontos: {pontos}")
 
-    texto = fonte.render(f"Pontos: {pontos}", True, BRANCO) # TEXTO A SER MOSTRADO    
+    texto = fonte.render(f"Pontos: {pontos} | Velocidade: {FPS}", True, BRANCO) # TEXTO A SER MOSTRADO    
     # POSICIONANDO O TEXTO
     rect_texto = texto.get_rect()
-    rect_texto.center = (700, 50)    
+    rect_texto.center = (600, 50)    
     # DESENHAR O TEXTO NA TELA
     TELA.blit(texto, rect_texto)
                 
