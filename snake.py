@@ -102,16 +102,13 @@ while True:
     rect_texto1.center = (400, 400)    
 
     if x_snake > LARGURA - 30 or x_snake < 0:
-        change_direction = False
         x_snake = x_snake
-        TELA.blit(texto1, rect_texto1)
-        sleep(3)
+        sleep(2)
         break
+
     elif y_snake > ALTURA - 30 or y_snake < 0:
-        change_direction = False
         y_snake = y_snake
-        TELA.blit(texto1, rect_texto1)
-        sleep(3)
+        sleep(2) 
         break
     
     if change_direction != True:
